@@ -5,6 +5,6 @@ export interface Todo {
   body: string;
 }
 
-export interface TodoObject {
+export interface Todos {
   todos: Todo[];
 }

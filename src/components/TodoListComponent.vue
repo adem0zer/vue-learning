@@ -25,18 +25,16 @@
 <script setup lang="ts">
 import { ref, reactive } from "vue";
 import axios from "axios";
-import { Todo, TodoObject } from "../models/todos";
+import { Todo, Todos } from "../models/todos";
 const message = ref<string>("Welcome to TodoList Page");
 
 let todoList = ref<Todo[]>([]);
-let todoList2 = reactive<TodoObject>({ todos: [] });
+let todoList2 = reactive<Todos>({ todos: [] });
 
 const getPostList = async () => {
   axios.create({});
   await axios
-    .get<Todo[]>("https://jsonplaceholder.typicode.com/posts", {
-      headers: { "X-Campaign-ID": 12 },
-    })
+    .get<Todo[]>("https://jsonplaceholder.typicode.com/posts")
     .then((todos) => {
       todoList.value = todos.data;
       todoList2.todos = todos.data;

@@ -1,11 +1,11 @@
 import { ref, reactive } from "vue";
 import axios from "axios";
-import { Todo, TodoObject } from "../../models/todos";
+import { Todo, Todos } from "../../models/todos";
 
 export default class TodoComponent {
   message = ref<string>("Welcome to TodoList Page");
   todoList = ref<Todo[]>([]);
-  todoList2 = reactive<TodoObject>({ todos: [] });
+  todoList2 = reactive<Todos>({ todos: [] });
 
   getPostList = async () => {
     await axios
