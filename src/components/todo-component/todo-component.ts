@@ -6,6 +6,11 @@ export default class TodoComponent {
   message = ref<string>("Welcome to TodoList Page");
   todoList = ref<Todo[]>([]);
   todoList2 = reactive<Todos>({ todos: [] });
+  small = ref<boolean>(false);
+  background = ref<boolean>(false);
+  disabled = ref<boolean>(false);
+  currentPage = ref<number>(1);
+  pageSize = ref<number>(10);
 
   getPostList = async () => {
     await axios
@@ -15,7 +20,7 @@ export default class TodoComponent {
         this.todoList2.todos = todos.data;
       });
   };
-  pageSize = ref<number>(10);
+
   showData = () => {
     return this.todoList2.todos.slice(
       this.pageSize.value * this.currentPage.value - this.pageSize.value,
@@ -33,15 +38,10 @@ export default class TodoComponent {
   handleSizeChange = (val: number): void => {
     this.pageSize.value = val;
   };
+
   handleCurrentChange = (val: number): void => {
     this.currentPage.value = val;
   };
-
-  small = ref<boolean>(false);
-  background = ref(false);
-  disabled = ref(false);
-
-  currentPage = ref(1);
 
   messageChange = (): void => {
     this.small.value

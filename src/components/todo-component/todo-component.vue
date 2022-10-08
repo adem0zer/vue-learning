@@ -21,7 +21,7 @@
       ></el-col
     >
   </el-row>
-  <div v-if="todo.todoList2.todos.length" class="block">
+  <div v-if="todo.todoList2.todos.length">
     <el-row :gutter="20">
       <el-col :span="12" :offset="6"
         ><el-table
@@ -36,7 +36,7 @@
       ></el-col>
     </el-row>
   </div>
-  <div class="block pagination">
+  <div class="block pagination" v-if="todo.todoList2.todos.length">
     <el-pagination
       @size-change="todo.handleSizeChange"
       @current-change="todo.handleCurrentChange"
