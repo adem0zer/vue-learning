@@ -60,6 +60,6 @@ import {
 } from "element-plus";
 import AboutView from "@/views/AboutView.vue";
 </script>
-<style lang="css">
+<style lang="scss">
 @import "./todo.component.scss";
 </style>
