@@ -1,6 +1,7 @@
-import { ref, reactive } from "vue";
+import { ref, reactive, watch, watchEffect } from "vue";
 import axios from "axios";
 import { Todo, Todos } from "../../models/todos";
+import { TableColumnInformation } from "@/models/todos";
 
 export default class TodoComponent {
   message = ref<string>("Welcome to TodoList Page");
@@ -11,6 +12,13 @@ export default class TodoComponent {
   disabled = ref<boolean>(false);
   currentPage = ref<number>(1);
   pageSize = ref<number>(10);
+  tableColumns = ref<TableColumnInformation[]>([
+    { key: "id", value: "Id", width: 50 },
+    { key: "userId", value: "User Id", width: 80 },
+    { key: "title", value: "Title", width: 150 },
+    { key: "body", value: "Body" },
+  ]);
+  message2 = ref<Array<string>>([]);
 
   getPostList = async () => {
     await axios
@@ -44,10 +52,71 @@ export default class TodoComponent {
   };
 
   messageChange = (): void => {
+    this.message2.value = ["Message Change2"];
     this.small.value
       ? (this.message.value = "Welcome to TodoList Page")
       : (this.message.value = "Message Change");
+
+    this.small.value
+      ? (this.url.value = "https://yesno.wtf/api")
+      : (this.url.value = "https://yesno.wtf/api2");
     this.small.value = !this.small.value;
   };
+  x = ref<string>("");
+  watchMessage = watch(this.message, (newX: string, oldX: string): void => {
+    console.log("NewX: ", newX, " OldX: ", oldX);
+  });
+
+  question = ref("");
+  answer = ref("Questions usually contain a question mark. ;-)");
+
+  // watch works directly on a ref
+  watchMessage2 = watch(
+    () => this.message.value + " Deneme",
+    async (newQuestion, oldQuestion) => {
+      console.log("123: ", newQuestion);
+
+      if (newQuestion.indexOf("?") > -1) {
+        this.message.value = "Thinking...";
+        try {
+          const res = await fetch("https://yesno.wtf/api");
+          this.message.value = (await res.json()).forced;
+          console.log("ANSWER: ", this.message.value);
+        } catch (error) {
+          this.answer.value = "Error! Could not reach the API. " + error;
+        }
+      }
+    }
+  );
+  watchMessag3 = watch(
+    () => "Merhaba",
+    (newData) => {
+      console.log("newData: ", newData);
+    }
+  );
+  watchMessageArray = watch(
+    [() => this.message.value, () => this.x.value],
+    ([newMessage, newX], [oldMessage, oldX]) => {
+      console.log("New Message: ", newMessage, "Old Message: ", oldMessage);
+      console.log("New X: ", newX, "Old X: ", oldX);
+    },
+    { deep: true }
+  );
+
+  url = ref<string>("https://yesno.wtf/api");
+  data2 = ref<string>("");
+
+  watchEffectExample = watchEffect(async () => {
+    const response = await fetch(this.url.value);
+    console.log("asd", (await response.json()).forced);
+
+    if ((await response.json()).forced) {
+      this.data2.value = (await response.json()).forced;
+    } else {
+      this.data2.value = "Not exist";
+    }
+
+    console.log("------>", this.data2.value);
+  });
 }
 export const todo = new TodoComponent();

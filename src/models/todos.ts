@@ -8,3 +8,9 @@ export interface Todo {
 export interface Todos {
   todos: Todo[];
 }
+
+export interface TableColumnInformation {
+  key: string;
+  value: string;
+  width?: number;
+}
